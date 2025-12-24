@@ -60,16 +60,16 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // 放行登录接口（已修正/api前缀）
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
                         // 放行预检请求（核心：解决OPTIONS请求401）
                         .requestMatchers(request -> "OPTIONS".equals(request.getMethod())).permitAll()
                         // 学生接口权限
-                        .requestMatchers("/api/score/student/**").hasRole("STUDENT")
+                        .requestMatchers("/score/student/**").hasRole("STUDENT")
                         // 教师接口权限
-                        .requestMatchers("/api/score/teacher/**").hasRole("TEACHER")
-                        .requestMatchers("/api/teacher/**").hasRole("TEACHER")
-                        .requestMatchers("/api/student/**").hasRole("STUDENT")
-                        .requestMatchers("/api/students/**").hasRole("TEACHER")
+                        .requestMatchers("/score/teacher/**").hasRole("TEACHER")
+                        .requestMatchers("/teacher/**").hasRole("TEACHER")
+                        .requestMatchers("/student/**").hasRole("STUDENT")
+                        .requestMatchers("/students/**").hasRole("TEACHER")
                         // 其他请求需认证
                         .anyRequest().authenticated()
                 );

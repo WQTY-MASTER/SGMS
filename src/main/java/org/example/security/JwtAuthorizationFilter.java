@@ -44,7 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         logger.info("处理请求：URI={}, Method={}", requestURI, request.getMethod());
 
         // 放行登录接口和OPTIONS预检请求
-        if (requestURI.endsWith("/api/auth/login") || "OPTIONS".equals(request.getMethod())) {
+        if (requestURI.endsWith("/auth/login") || "OPTIONS".equals(request.getMethod())) {
             logger.debug("放行登录/OPTIONS接口");
             chain.doFilter(request, response);
             return;

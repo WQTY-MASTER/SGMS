@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth") // 核心修正：添加/api前缀，匹配前端请求路径
+@RequestMapping("/auth") // 核心修正：添加/api前缀，匹配前端请求路径
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
