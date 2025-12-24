@@ -51,6 +51,7 @@ public class SecurityConfig {
                     config.addAllowedOrigin("http://localhost:8082");
                     config.addAllowedMethod("*");
                     config.addAllowedHeader("*");
+                    config.addExposedHeader("Authorization");
                     config.setAllowCredentials(true);
                     return config;
                 }))

@@ -24,7 +24,8 @@ public class CorsConfig {
         config.addAllowedHeader("*");
         // 预检请求有效期（3600秒=1小时，避免频繁发送OPTIONS请求）
         config.setMaxAge(3600L);
-
+        // 允许前端读取Authorization响应头
+        config.addExposedHeader("Authorization");
         // 2. 配置跨域生效的路径（/** 表示所有接口都应用该配置）
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config); // 所有接口都允许跨域

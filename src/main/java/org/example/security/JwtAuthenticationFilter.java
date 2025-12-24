@@ -77,10 +77,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtUtil.generateToken(username, role);
         logger.debug("生成Token: {}", token);
 
+        // 跨域相关：暴露Authorization头，让前端能获取到
+        response.setHeader("Access-Control-Expose-Headers", "Authorization, token");
+        // 设置JWT令牌头
         response.setHeader("Authorization", "Bearer " + token);
         response.setHeader("token", token);
+        // 设置响应格式
         response.setContentType("application/json;charset=utf-8");
+
         PrintWriter out = response.getWriter();
+        // 整合响应数据：包含token、accessToken（兼容前端）、role、username
         out.write(JSON.toJSONString(Result.success(Map.of(
                 "token", token,
                 "accessToken", token,

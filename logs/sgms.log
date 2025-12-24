@@ -1283,3 +1283,5 @@ Caused by: org.apache.ibatis.reflection.ReflectionException: There is no setter 
 2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
 2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzU1NDcsImV4cCI6MTc2NjY2MTk0N30.CelqcW0c-8R2qbBFvf1R8VpqyGlrdmc-cdY19HyzX0s
 2025-12-24 19:25:47 [http-nio-8080-exec-2] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:35:20 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-24 19:35:20 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
