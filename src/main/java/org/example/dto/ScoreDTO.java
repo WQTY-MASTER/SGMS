@@ -53,4 +53,9 @@ public class ScoreDTO implements Serializable {
      * 原因：LocalDate是不可变类，线程安全，API更友好
      */
     private LocalDate examTime;
+
+    /**
+     * 授课教师姓名（sys_user.real_name）
+     */
+    private String teacherName;
 }

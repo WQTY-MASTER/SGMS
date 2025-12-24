@@ -4,7 +4,7 @@
 <!-- namespace 必须与Mapper接口全路径一致 -->
 <mapper namespace="org.example.mapper.ScoreMapper">
 
-    <!-- 结果集映射（适配Integer类型字段） -->
+    <!-- 结果集映射（适配Integer类型字段 + 新增teacherName映射） -->
     <resultMap id="ScoreDTOMap" type="org.example.dto.ScoreDTO">
         <id column="id" property="id" javaType="java.lang.Integer"/> <!-- 明确指定Integer类型 -->
         <result column="student_id" property="studentId" javaType="java.lang.Integer"/> <!-- 适配数据库integer -->
@@ -13,9 +13,11 @@
         <result column="courseName" property="courseName" javaType="java.lang.String"/>
         <result column="score" property="score" javaType="java.math.BigDecimal"/> <!-- 适配numeric(5,1) -->
         <result column="exam_time" property="examTime" javaType="java.time.LocalDate"/> <!-- 适配date类型 -->
+        <!-- 新增：教师姓名映射 -->
+        <result column="teacherName" property="teacherName" javaType="java.lang.String"/>
     </resultMap>
 
-    <!-- 原有SQL（无需修改逻辑，参数类型由Mapper接口控制，PostgreSQL兼容Integer传参） -->
+    <!-- 原有SQL（补充教师联表+teacherName字段） -->
     <select id="selectScoreListByStudentIdAndCourseName" resultMap="ScoreDTOMap">
         SELECT
         s.id,
@@ -24,11 +26,16 @@
         s.course_id,
         c.course_name AS courseName,
         s.score,
-        s.exam_time
+        s.exam_time,
+        <!-- 新增：教师姓名字段 -->
+        tu.real_name AS teacherName
         FROM score s
         LEFT JOIN student st ON s.student_id = st.id
         LEFT JOIN sys_user su ON st.user_id = su.id
         LEFT JOIN course c ON s.course_id = c.id
+        <!-- 新增：关联教师表和教师用户表 -->
+        LEFT JOIN teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_user tu ON t.user_id = tu.id
         WHERE s.student_id = #{studentId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
         <if test="courseName != null and courseName != ''">
             <!-- PostgreSQL原生拼接语法：% || 字段 || % -->
@@ -44,11 +51,16 @@
         s.course_id,
         c.course_name AS courseName,
         s.score,
-        s.exam_time
+        s.exam_time,
+        <!-- 新增：教师姓名字段 -->
+        tu.real_name AS teacherName
         FROM score s
         LEFT JOIN student st ON s.student_id = st.id
         LEFT JOIN sys_user su ON st.user_id = su.id
         LEFT JOIN course c ON s.course_id = c.id
+        <!-- 新增：关联教师表和教师用户表 -->
+        LEFT JOIN teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_user tu ON t.user_id = tu.id
         WHERE s.course_id = #{courseId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
     </select>
 
@@ -60,11 +72,16 @@
         s.course_id,
         c.course_name AS courseName,
         s.score,
-        s.exam_time
+        s.exam_time,
+        <!-- 新增：教师姓名字段 -->
+        tu.real_name AS teacherName
         FROM score s
         LEFT JOIN student st ON s.student_id = st.id
         LEFT JOIN sys_user su ON st.user_id = su.id
         LEFT JOIN course c ON s.course_id = c.id
+        <!-- 新增：关联教师表和教师用户表 -->
+        LEFT JOIN teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_user tu ON t.user_id = tu.id
         WHERE s.student_id = #{studentId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
     </select>
 
@@ -76,11 +93,16 @@
         s.course_id,
         c.course_name AS courseName,
         s.score,
-        s.exam_time
+        s.exam_time,
+        <!-- 新增：教师姓名字段 -->
+        tu.real_name AS teacherName
         FROM score s
         LEFT JOIN student st ON s.student_id = st.id
         LEFT JOIN sys_user su ON st.user_id = su.id
         LEFT JOIN course c ON s.course_id = c.id
+        <!-- 新增：关联教师表和教师用户表 -->
+        LEFT JOIN teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_user tu ON t.user_id = tu.id
         WHERE c.teacher_id = #{teacherId, jdbcType=BIGINT} <!-- teacherId保留Long，指定BIGINT -->
         <if test="studentName != null and studentName != ''">
             <!-- PostgreSQL原生拼接语法 -->
@@ -91,7 +113,7 @@
         </if>
     </select>
 
-    <!-- ========== 新增分页SQL（适配PostgreSQL+Integer类型） ========== -->
+    <!-- ========== 新增分页SQL（适配PostgreSQL+Integer类型 + 补充教师联表） ========== -->
     <select id="selectScoreListByStudentIdAndCourseNamePage" resultMap="ScoreDTOMap">
         SELECT
         s.id,
@@ -100,11 +122,16 @@
         s.course_id,
         c.course_name AS courseName,
         s.score,
-        s.exam_time
+        s.exam_time,
+        <!-- 新增：教师姓名字段 -->
+        tu.real_name AS teacherName
         FROM score s
         LEFT JOIN student st ON s.student_id = st.id
         LEFT JOIN sys_user su ON st.user_id = su.id
         LEFT JOIN course c ON s.course_id = c.id
+        <!-- 新增：关联教师表和教师用户表 -->
+        LEFT JOIN teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_user tu ON t.user_id = tu.id
         WHERE s.student_id = #{studentId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
         <if test="courseName != null and courseName != ''">
             AND c.course_name LIKE '%' || #{courseName} || '%'
@@ -119,11 +146,16 @@
         s.course_id,
         c.course_name AS courseName,
         s.score,
-        s.exam_time
+        s.exam_time,
+        <!-- 新增：教师姓名字段 -->
+        tu.real_name AS teacherName
         FROM score s
         LEFT JOIN student st ON s.student_id = st.id
         LEFT JOIN sys_user su ON st.user_id = su.id
         LEFT JOIN course c ON s.course_id = c.id
+        <!-- 新增：关联教师表和教师用户表 -->
+        LEFT JOIN teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_user tu ON t.user_id = tu.id
         WHERE c.teacher_id = #{teacherId, jdbcType=BIGINT} <!-- teacherId保留Long -->
         <if test="studentName != null and studentName != ''">
             AND su.real_name LIKE '%' || #{studentName} || '%'
