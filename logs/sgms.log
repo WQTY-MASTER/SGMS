@@ -1221,3 +1221,23 @@ Caused by: org.apache.ibatis.reflection.ReflectionException: There is no setter 
 2025-12-24 19:15:55 [http-nio-8080-exec-3] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
 2025-12-24 19:22:49 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-12-24 19:22:49 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-24 19:22:52 [main] INFO  org.example.SGMSApplication - Starting SGMSApplication using Java 21.0.8 with PID 39108 (G:\代码1\idea代码\SGMS\target\classes started by WQTY in G:\代码1\idea代码\SGMS)
+2025-12-24 19:22:52 [main] INFO  org.example.SGMSApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-24 19:22:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'courseMapper' and 'org.example.mapper.CourseMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 19:22:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'scoreMapper' and 'org.example.mapper.ScoreMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 19:22:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'studentMapper' and 'org.example.mapper.StudentMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 19:22:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'sysUserMapper' and 'org.example.mapper.SysUserMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 19:22:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'teacherMapper' and 'org.example.mapper.TeacherMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 19:22:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[org.example.mapper]' package. Please check your configuration.
+2025-12-24 19:22:53 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-24 19:22:53 [main] INFO  o.a.c.core.AprLifecycleListener - Loaded Apache Tomcat Native library [2.0.7] using APR version [1.7.4].
+2025-12-24 19:22:53 [main] INFO  o.a.c.core.AprLifecycleListener - OpenSSL successfully initialized [OpenSSL 3.0.13 30 Jan 2024]
+2025-12-24 19:22:53 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-24 19:22:53 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2025-12-24 19:22:53 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-24 19:22:53 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 774 ms
+2025-12-24 19:22:53 [main] DEBUG o.e.security.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-12-24 19:22:53 [main] DEBUG o.e.security.JwtAuthorizationFilter - Filter 'jwtAuthorizationFilter' configured for use
+2025-12-24 19:22:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6ef4cbe1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@207dd1b7, org.springframework.security.web.context.SecurityContextHolderFilter@79ab97fd, org.springframework.security.web.header.HeaderWriterFilter@2d70f312, org.springframework.web.filter.CorsFilter@2baac4a7, org.springframework.security.web.authentication.logout.LogoutFilter@230232b0, org.example.security.JwtAuthorizationFilter@3b481bf5, org.example.security.JwtAuthenticationFilter@521441d5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5fe46d52, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3dfd7eaa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@23ad2d17, org.springframework.security.web.session.SessionManagementFilter@4ea1aa52, org.springframework.security.web.access.ExceptionTranslationFilter@2f15a964, org.springframework.security.web.access.intercept.AuthorizationFilter@66451058]
+2025-12-24 19:22:53 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path '/api'
+2025-12-24 19:22:53 [main] INFO  org.example.SGMSApplication - Started SGMSApplication in 1.822 seconds (process running for 2.324)
