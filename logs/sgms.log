@@ -1166,3 +1166,58 @@ Caused by: org.apache.ibatis.reflection.ReflectionException: There is no setter 
 2025-12-24 18:07:47 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@74fb5b59, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@130a6eb9, org.springframework.security.web.context.SecurityContextHolderFilter@3e9beef2, org.springframework.security.web.header.HeaderWriterFilter@1578fa9, org.springframework.web.filter.CorsFilter@722531ab, org.springframework.security.web.authentication.logout.LogoutFilter@6aff97d6, org.example.security.JwtAuthorizationFilter@525b1b70, org.example.security.JwtAuthenticationFilter@6401188a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3111631d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@74123110, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@8f57e4c, org.springframework.security.web.session.SessionManagementFilter@9e30f9a, org.springframework.security.web.access.ExceptionTranslationFilter@4db0ba1c, org.springframework.security.web.access.intercept.AuthorizationFilter@22f8adc2]
 2025-12-24 18:07:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path '/api'
 2025-12-24 18:07:47 [main] INFO  org.example.SGMSApplication - Started SGMSApplication in 1.942 seconds (process running for 2.599)
+2025-12-24 18:49:36 [main] INFO  org.example.SGMSApplication - Starting SGMSApplication using Java 21.0.8 with PID 38892 (G:\代码1\idea代码\SGMS\target\classes started by WQTY in G:\代码1\idea代码\SGMS)
+2025-12-24 18:49:36 [main] INFO  org.example.SGMSApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-24 18:49:37 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'courseMapper' and 'org.example.mapper.CourseMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 18:49:37 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'scoreMapper' and 'org.example.mapper.ScoreMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 18:49:37 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'studentMapper' and 'org.example.mapper.StudentMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 18:49:37 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'sysUserMapper' and 'org.example.mapper.SysUserMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 18:49:37 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'teacherMapper' and 'org.example.mapper.TeacherMapper' mapperInterface. Bean already defined with the same name!
+2025-12-24 18:49:37 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[org.example.mapper]' package. Please check your configuration.
+2025-12-24 18:49:37 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-24 18:49:37 [main] INFO  o.a.c.core.AprLifecycleListener - Loaded Apache Tomcat Native library [2.0.7] using APR version [1.7.4].
+2025-12-24 18:49:37 [main] INFO  o.a.c.core.AprLifecycleListener - OpenSSL successfully initialized [OpenSSL 3.0.13 30 Jan 2024]
+2025-12-24 18:49:37 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-24 18:49:37 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2025-12-24 18:49:37 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-24 18:49:37 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 818 ms
+2025-12-24 18:49:37 [main] DEBUG o.e.security.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-12-24 18:49:37 [main] DEBUG o.e.security.JwtAuthorizationFilter - Filter 'jwtAuthorizationFilter' configured for use
+2025-12-24 18:49:38 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@8f57e4c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@26fadd98, org.springframework.security.web.context.SecurityContextHolderFilter@2d70f312, org.springframework.security.web.header.HeaderWriterFilter@1b30a54e, org.springframework.web.filter.CorsFilter@66451058, org.springframework.security.web.authentication.logout.LogoutFilter@427308f8, org.example.security.JwtAuthorizationFilter@525b1b70, org.example.security.JwtAuthenticationFilter@6401188a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ea1aa52, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3a9b41a0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3db6dd52, org.springframework.security.web.session.SessionManagementFilter@3e9beef2, org.springframework.security.web.access.ExceptionTranslationFilter@414b2df5, org.springframework.security.web.access.intercept.AuthorizationFilter@74fb5b59]
+2025-12-24 18:49:38 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path '/api'
+2025-12-24 18:49:38 [main] INFO  org.example.SGMSApplication - Started SGMSApplication in 1.914 seconds (process running for 2.417)
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 18:50:42 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 18:50:42 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@26345b86
+2025-12-24 18:50:42 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-24 18:50:43 [http-nio-8080-exec-1] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 18:50:43 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 18:50:43 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 18:50:43 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzM0NDMsImV4cCI6MTc2NjY1OTg0M30.dqivo3QAQ73qjDrX9yUE0F0i8JH4pB2D7b-3eIdyByA
+2025-12-24 18:50:43 [http-nio-8080-exec-1] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:09:51 [http-nio-8080-exec-2] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 19:09:51 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 19:09:51 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 19:09:51 [http-nio-8080-exec-2] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 19:09:51 [http-nio-8080-exec-2] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 19:09:51 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 19:09:51 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 19:09:51 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzQ1OTEsImV4cCI6MTc2NjY2MDk5MX0.bRgpNMjjkgN3aAA9iLuANAWiSddd5oM9sKGVv_d9Bhk
+2025-12-24 19:09:51 [http-nio-8080-exec-2] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:15:55 [http-nio-8080-exec-3] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 19:15:55 [http-nio-8080-exec-3] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 19:15:55 [http-nio-8080-exec-3] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 19:15:55 [http-nio-8080-exec-3] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 19:15:55 [http-nio-8080-exec-3] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 19:15:55 [http-nio-8080-exec-3] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 19:15:55 [http-nio-8080-exec-3] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 19:15:55 [http-nio-8080-exec-3] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzQ5NTUsImV4cCI6MTc2NjY2MTM1NX0.-Pizs-6RMXh8RuqH0uTNTAQ9W8mnRcjGB0beaIMq8FQ
+2025-12-24 19:15:55 [http-nio-8080-exec-3] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:22:49 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-24 19:22:49 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

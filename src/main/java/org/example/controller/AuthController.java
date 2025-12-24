@@ -44,14 +44,13 @@ public class AuthController {
         SysUser user = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getUsername, loginDTO.getUsername()));
 
-        // 错误：JwtUtil的generateToken需要username和role，不是直接传user对象
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
 
         // 4. 返回结果（含角色：STUDENT/TEACHER，前端根据role跳转对应页面）
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
+        result.put("accessToken", token);
         result.put("role", user.getRole());
-        // 修复：删除不存在的realName字段，或替换为实际存在的字段
         result.put("username", user.getUsername());
 
         return Result.success(result);

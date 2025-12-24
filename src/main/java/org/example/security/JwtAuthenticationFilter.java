@@ -67,19 +67,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String username = authResult.getName();
         logger.debug("认证成功，用户名={}", username);
-        
+
         // 从数据库中查询用户的实际角色
         SysUser user = sysUserMapper.selectOne(new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<SysUser>()
                 .eq("username", username));
-        
+
         String role = user != null ? user.getRole() : "USER"; // 默认角色为USER
         logger.debug("用户角色: {}", role);
         String token = jwtUtil.generateToken(username, role);
         logger.debug("生成Token: {}", token);
 
+        response.setHeader("Authorization", "Bearer " + token);
+        response.setHeader("token", token);
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
-        out.write(JSON.toJSONString(Result.success(Map.of("token", token, "role", role, "username", username))));
+        out.write(JSON.toJSONString(Result.success(Map.of(
+                "token", token,
+                "accessToken", token,
+                "role", role,
+                "username", username
+        ))));
         out.flush();
         out.close();
         logger.info("登录成功，用户名={}, 角色={}", username, role);
