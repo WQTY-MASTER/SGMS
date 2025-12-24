@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 必须与Mapper接口全路径一致 -->
+<mapper namespace="org.example.mapper.ScoreMapper">
+
+    <!-- 结果集映射（适配Integer类型字段） -->
+    <resultMap id="ScoreDTOMap" type="org.example.dto.ScoreDTO">
+        <id column="id" property="id" javaType="java.lang.Integer"/> <!-- 明确指定Integer类型 -->
+        <result column="student_id" property="studentId" javaType="java.lang.Integer"/> <!-- 适配数据库integer -->
+        <result column="studentName" property="studentName" javaType="java.lang.String"/>
+        <result column="course_id" property="courseId" javaType="java.lang.Integer"/> <!-- 适配数据库integer -->
+        <result column="courseName" property="courseName" javaType="java.lang.String"/>
+        <result column="score" property="score" javaType="java.math.BigDecimal"/> <!-- 适配numeric(5,1) -->
+        <result column="exam_time" property="examTime" javaType="java.time.LocalDate"/> <!-- 适配date类型 -->
+    </resultMap>
+
+    <!-- 原有SQL（无需修改逻辑，参数类型由Mapper接口控制，PostgreSQL兼容Integer传参） -->
+    <select id="selectScoreListByStudentIdAndCourseName" resultMap="ScoreDTOMap">
+        SELECT
+        s.id,
+        s.student_id,
+        su.real_name AS studentName,
+        s.course_id,
+        c.course_name AS courseName,
+        s.score,
+        s.exam_time
+        FROM score s
+        LEFT JOIN student st ON s.student_id = st.id
+        LEFT JOIN sys_user su ON st.user_id = su.id
+        LEFT JOIN course c ON s.course_id = c.id
+        WHERE s.student_id = #{studentId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
+        <if test="courseName != null and courseName != ''">
+            <!-- PostgreSQL原生拼接语法：% || 字段 || % -->
+            AND c.course_name LIKE '%' || #{courseName} || '%'
+        </if>
+    </select>
+
+    <select id="selectScoreListByCourseId" resultMap="ScoreDTOMap">
+        SELECT
+        s.id,
+        s.student_id,
+        su.real_name AS studentName,
+        s.course_id,
+        c.course_name AS courseName,
+        s.score,
+        s.exam_time
+        FROM score s
+        LEFT JOIN student st ON s.student_id = st.id
+        LEFT JOIN sys_user su ON st.user_id = su.id
+        LEFT JOIN course c ON s.course_id = c.id
+        WHERE s.course_id = #{courseId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
+    </select>
+
+    <select id="selectScoreListByStudentId" resultMap="ScoreDTOMap">
+        SELECT
+        s.id,
+        s.student_id,
+        su.real_name AS studentName,
+        s.course_id,
+        c.course_name AS courseName,
+        s.score,
+        s.exam_time
+        FROM score s
+        LEFT JOIN student st ON s.student_id = st.id
+        LEFT JOIN sys_user su ON st.user_id = su.id
+        LEFT JOIN course c ON s.course_id = c.id
+        WHERE s.student_id = #{studentId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
+    </select>
+
+    <select id="selectScoreListByTeacher" resultMap="ScoreDTOMap">
+        SELECT
+        s.id,
+        s.student_id,
+        su.real_name AS studentName,
+        s.course_id,
+        c.course_name AS courseName,
+        s.score,
+        s.exam_time
+        FROM score s
+        LEFT JOIN student st ON s.student_id = st.id
+        LEFT JOIN sys_user su ON st.user_id = su.id
+        LEFT JOIN course c ON s.course_id = c.id
+        WHERE c.teacher_id = #{teacherId, jdbcType=BIGINT} <!-- teacherId保留Long，指定BIGINT -->
+        <if test="studentName != null and studentName != ''">
+            <!-- PostgreSQL原生拼接语法 -->
+            AND su.real_name LIKE '%' || #{studentName} || '%'
+        </if>
+        <if test="courseId != null">
+            AND s.course_id = #{courseId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
+        </if>
+    </select>
+
+    <!-- ========== 新增分页SQL（适配PostgreSQL+Integer类型） ========== -->
+    <select id="selectScoreListByStudentIdAndCourseNamePage" resultMap="ScoreDTOMap">
+        SELECT
+        s.id,
+        s.student_id,
+        su.real_name AS studentName,
+        s.course_id,
+        c.course_name AS courseName,
+        s.score,
+        s.exam_time
+        FROM score s
+        LEFT JOIN student st ON s.student_id = st.id
+        LEFT JOIN sys_user su ON st.user_id = su.id
+        LEFT JOIN course c ON s.course_id = c.id
+        WHERE s.student_id = #{studentId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
+        <if test="courseName != null and courseName != ''">
+            AND c.course_name LIKE '%' || #{courseName} || '%'
+        </if>
+    </select>
+
+    <select id="selectScoreListByTeacherPage" resultMap="ScoreDTOMap">
+        SELECT
+        s.id,
+        s.student_id,
+        su.real_name AS studentName,
+        s.course_id,
+        c.course_name AS courseName,
+        s.score,
+        s.exam_time
+        FROM score s
+        LEFT JOIN student st ON s.student_id = st.id
+        LEFT JOIN sys_user su ON st.user_id = su.id
+        LEFT JOIN course c ON s.course_id = c.id
+        WHERE c.teacher_id = #{teacherId, jdbcType=BIGINT} <!-- teacherId保留Long -->
+        <if test="studentName != null and studentName != ''">
+            AND su.real_name LIKE '%' || #{studentName} || '%'
+        </if>
+        <if test="courseId != null">
+            AND s.course_id = #{courseId, jdbcType=INTEGER} <!-- 明确指定JDBC类型 -->
+        </if>
+    </select>
+
+</mapper>

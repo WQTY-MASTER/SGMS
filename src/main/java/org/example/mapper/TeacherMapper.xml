@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.TeacherMapper"> <!-- 匹配TeacherMapper接口路径 -->
+
+    <!-- 实现selectTeacherInfo方法：查询教师基本信息 -->
+    <select id="selectTeacherInfo" resultType="org.example.dto.TeacherInfoDTO">
+        SELECT
+            t.teacher_no AS teacherNo,
+            u.real_name AS realName,
+            t.department
+        FROM
+            teacher t
+                LEFT JOIN sys_user u ON t.user_id = u.id
+        WHERE
+            t.user_id = #{userId}
+    </select>
+
+    <!-- 实现selectCoursesByTeacherId方法：查询教师负责的课程 -->
+    <select id="selectCoursesByTeacherId" resultType="org.example.dto.CourseSimpleDTO">
+        SELECT
+            id,
+            course_name AS courseName,
+            course_code AS courseCode,
+            credit
+        FROM
+            course
+        WHERE
+            teacher_id = #{teacherId}
+    </select>
+
+</mapper>

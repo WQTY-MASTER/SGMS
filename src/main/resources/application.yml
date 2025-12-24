@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: SGMS
+  # 数据源配置（PostgreSQL）
+  datasource:
+    url: jdbc:postgresql://localhost:5432/SGMS  # PostgreSQL标准URL格式
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+    # 新增Hikari连接池配置（优化性能，避免连接泄露）
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+  # Jackson日期格式化（全局统一）
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false  # 禁用时间戳，返回格式化字符串
+
+# MyBatis-Plus核心配置（适配PostgreSQL）
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml  # 扫描所有Mapper.xml
+  type-aliases-package: org.example.entity     # 实体类别名包
+  configuration:
+    map-underscore-to-camel-case: true         # 下划线转驼峰（必须开启）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 打印SQL日志
+    jdbc-type-for-null: null                   # 解决PostgreSQL空值映射问题
+  global-config:
+    db-config:
+      id-type: auto                            # 主键自增（适配PostgreSQL）
+      logic-delete-field: deleted              # 逻辑删除字段（可选）
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT配置（核心：密钥≥32字符，解决无效签名）
+jwt:
+  secret: sgms_secret_2025_key_abc123_def456_ghi789_jkl012  # 扩展至32+字符
+  expiration: 86400000                                       # Token有效期24小时
+  token-header: Authorization                                # 请求头名称
+  token-prefix: Bearer                                       # 前缀（末尾无空格，代码中处理）
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api  # 所有接口前缀：http://localhost:8080/api/xxx
+  tomcat:
+    uri-encoding: UTF-8 # 统一编码，避免中文乱码
+
+# 日志配置（分级打印，方便排查问题）
+logging:
+  level:
+    root: INFO
+    org.example.security: DEBUG       # 安全模块DEBUG级日志
+    org.example.controller: DEBUG     # 控制器DEBUG级日志
+    org.example.service: DEBUG        # 服务层DEBUG级日志
+    org.example.mapper: DEBUG         # Mapper层DEBUG级日志（打印SQL）
+    org.springframework.security: INFO
+    com.baomidou.mybatisplus: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  # 可选：日志文件输出（避免控制台日志过多）
+  file:
+    name: logs/sgms.log

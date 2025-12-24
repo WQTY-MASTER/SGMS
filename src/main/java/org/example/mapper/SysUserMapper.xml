@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.SysUserMapper">
+
+    <!-- 根据 username 查询用户（返回完整的 SysUser 对象，含 id） -->
+    <select id="selectByUsername" resultType="org.example.entity.SysUser">
+        SELECT 
+            id, 
+            username, 
+            password, 
+            real_name, 
+            role, 
+            status,
+            create_time,
+            update_time
+        FROM sys_user
+        WHERE username = #{username}
+    </select>
+
+</mapper>
