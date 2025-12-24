@@ -61,6 +61,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 放行登录接口（已修正/api前缀）
                         .requestMatchers("/auth/login").permitAll()
+                        // 放行注册接口
+                        .requestMatchers("/auth/register/**").permitAll()
                         // 放行预检请求（核心：解决OPTIONS请求401）
                         .requestMatchers(request -> "OPTIONS".equals(request.getMethod())).permitAll()
                         // 学生接口权限
