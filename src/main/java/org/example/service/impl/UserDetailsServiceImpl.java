@@ -42,7 +42,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean credentialsNonExpired = true; // 凭证（密码）是否未过期
         boolean accountNonLocked = true; // 账号是否未锁定
 
+        // 角色标准化处理（去除ROLE_前缀，统一大写）
+        String rawRole = user.getRole();
+        String normalizedRole = rawRole == null ? "" : rawRole.toUpperCase();
+        if (normalizedRole.startsWith("ROLE_")) {
+            normalizedRole = normalizedRole.substring("ROLE_".length());
+        }
+
         // 封装用户信息（包含角色权限和状态）
+        // 角色拼接ROLE_前缀，符合Spring Security的权限命名规范
         return new User(
                 user.getUsername(),
                 user.getPassword(), // 数据库中BCrypt加密后的密码
@@ -50,7 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 accountNonExpired,
                 credentialsNonExpired,
                 accountNonLocked,
-                AuthorityUtils.createAuthorityList("ROLE_" + user.getRole()) // 角色带ROLE_前缀，匹配Security配置
+                AuthorityUtils.createAuthorityList("ROLE_" + normalizedRole) // 使用标准化后的角色
         );
     }
 }

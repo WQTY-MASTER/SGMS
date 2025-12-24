@@ -44,14 +44,21 @@ public class AuthController {
         SysUser user = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getUsername, loginDTO.getUsername()));
 
-        // 核心修正：生成Token时直接传原始角色（如STUDENT/TEACHER），避免重复拼接ROLE_
-        String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+        // 3. 角色标准化处理（去除ROLE_前缀，统一大写）
+        String rawRole = user.getRole();
+        String normalizedRole = rawRole == null ? "" : rawRole.toUpperCase();
+        if (normalizedRole.startsWith("ROLE_")) {
+            normalizedRole = normalizedRole.substring("ROLE_".length());
+        }
 
-        // 4. 返回结果（含角色：STUDENT/TEACHER，前端根据role跳转对应页面）
+        // 4. 生成Token（使用标准化后的角色，避免重复拼接ROLE_）
+        String token = jwtUtil.generateToken(user.getUsername(), normalizedRole);
+
+        // 5. 返回结果（含标准化角色：STUDENT/TEACHER，前端根据role跳转对应页面）
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
-        result.put("accessToken", token);
-        result.put("role", user.getRole()); // 后端存储的原始角色（如STUDENT/TEACHER）
+        result.put("accessToken", token); // 兼容前端多字段读取
+        result.put("role", normalizedRole); // 统一返回大写、无前缀的角色
         result.put("username", user.getUsername());
 
         return Result.success(result);
