@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.dto.ScoreDTO;
+import org.example.dto.StudentOptionDTO;
 import org.example.dto.TeacherInfoDTO;
 import org.example.entity.Student;
 import org.example.entity.SysUser;
@@ -13,6 +14,8 @@ import org.example.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * 教师管理接口层（最终版：全链路适配PostgreSQL integer类型，无类型不匹配错误）
@@ -38,48 +41,11 @@ public class TeacherController {
     }
 
     /**
-     * 获取当前登录教师的信息（含负责的课程）
-     * 适配：SysUser.id(Long) → Integer（安全转换，匹配TeacherService）
+     * 查询课程成绩列表
      */
-    @GetMapping("/info")
-    public Result<TeacherInfoDTO> getTeacherInfo() {
+    @GetMapping("/score/list/{courseId}")
+    public Result<List<ScoreDTO>> getScoreList(@PathVariable Integer courseId) {
         try {
-            String username = UserUtils.getCurrentUsername();
-            if (username == null || username.trim().isEmpty()) {
-                return Result.error("未获取到当前登录用户名");
-            }
-
-            SysUser sysUser = sysUserMapper.selectByUsername(username);
-            if (sysUser == null) {
-                return Result.error("当前用户不存在");
-            }
-
-            // 核心适配：SysUser.id是Long → 转换为Integer（数据库user_id是integer，无溢出风险）
-            Integer userIdInt = sysUser.getId() != null ? sysUser.getId().intValue() : null;
-            if (userIdInt == null) {
-                return Result.error("用户ID为空，无法查询教师信息");
-            }
-
-            TeacherInfoDTO teacherInfo = teacherService.getTeacherInfoByUserId(userIdInt);
-            if (teacherInfo == null) {
-                return Result.error("未查询到该用户关联的教师信息");
-            }
-            return Result.success(teacherInfo);
-        } catch (Exception e) {
-            return Result.error("查询教师信息失败：" + e.getMessage());
-        }
-    }
-
-    /**
-     * 根据课程ID查询成绩列表（含学生信息）
-     * 适配：courseId为Integer（匹配ScoreService + 数据库integer类型）
-     */
-    @GetMapping("/score/list")
-    public Result<List<ScoreDTO>> getScoreList(@RequestParam Integer courseId) {
-        try {
-            if (courseId == null || courseId <= 0) {
-                return Result.error("课程ID无效");
-            }
             List<ScoreDTO> scoreList = scoreService.getScoreListByCourseId(courseId);
             return Result.success(scoreList);
         } catch (Exception e) {
@@ -105,13 +71,26 @@ public class TeacherController {
      * 适配：courseId为Integer（匹配StudentService + 数据库integer类型）
      */
     @GetMapping("/students-by-course")
-    public Result<List<Student>> getStudentsByCourse(@RequestParam Integer courseId) {
+    public Result<List<Map<String, Object>>> getStudentsByCourse(@RequestParam Integer courseId) {
         try {
             if (courseId == null || courseId <= 0) {
                 return Result.error("课程ID无效");
             }
-            List<Student> students = studentService.getStudentsByCourseId(courseId);
-            return Result.success(students);
+            List<StudentOptionDTO> students = studentService.getStudentOptionsByCourseId(courseId);
+            List<Map<String, Object>> result = new java.util.ArrayList<>();
+            if (students != null) {
+                for (StudentOptionDTO student : students) {
+                    Map<String, Object> item = new HashMap<>(5);
+                    item.put("id", student.getId());
+                    item.put("studentId", student.getId());
+                    item.put("studentNo", student.getStudentNo());
+                    item.put("studentName", student.getStudentName());
+                    item.put("label", student.getStudentName());
+                    item.put("value", student.getId());
+                    result.add(item);
+                }
+            }
+            return Result.success(result);
         } catch (Exception e) {
             return Result.error("查询课程对应学生失败：" + e.getMessage());
         }

@@ -1,6 +1,7 @@
 package org.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.example.dto.StudentOptionDTO;
 import org.example.entity.Student;
 import org.apache.ibatis.annotations.Select;
 
@@ -36,4 +37,16 @@ public interface StudentMapper extends BaseMapper<Student> {
     @Select("SELECT s.* FROM student s JOIN student_course sc ON s.id = sc.student_id WHERE sc.course_id = #{courseId}")
     // 核心修改：courseId 从 Long → Integer（与数据库 integer 类型匹配）
     List<Student> selectByCourseId(Integer courseId);
+
+    /**
+     * 根据课程ID查询学生下拉选项（包含姓名）
+     * @param courseId 课程ID
+     * @return 学生选项列表
+     */
+    @Select("SELECT s.id, s.student_no AS studentNo, u.real_name AS studentName " +
+            "FROM student s " +
+            "JOIN student_course sc ON s.id = sc.student_id " +
+            "JOIN sys_user u ON s.user_id = u.id " +
+            "WHERE sc.course_id = #{courseId}")
+    List<StudentOptionDTO> selectOptionsByCourseId(Integer courseId);
 }

@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.example.dto.StudentOptionDTO;
 import org.example.entity.Student;
 import org.example.mapper.StudentMapper;
 import org.example.service.StudentService;
@@ -31,5 +32,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public List<Student> getStudentsByCourseId(Integer courseId) {
         return studentMapper.selectByCourseId(courseId);
+    }
+
+    // 新增：根据课程ID查询学生下拉选项列表（实现接口中的新增方法）
+    @Override
+    public List<StudentOptionDTO> getStudentOptionsByCourseId(Integer courseId) {
+        return studentMapper.selectOptionsByCourseId(courseId);
     }
 }

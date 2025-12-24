@@ -62,7 +62,7 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     }
 
     /**
-     * 获取教师负责的课程列表
+     * 获取教师负责的课程列表（新增多字段返回，适配前端下拉选择）
      */
     @Override
     public List<Map<String, Object>> getTeacherCourses(Long teacherId) {
@@ -70,9 +70,13 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
         List<Map<String, Object>> result = new ArrayList<>();
         if (!CollectionUtils.isEmpty(courseList)) {
             for (Course course : courseList) {
-                Map<String, Object> courseMap = new HashMap<>(2);
+                // 扩展Map容量，新增courseId/label/value字段，适配前端下拉组件
+                Map<String, Object> courseMap = new HashMap<>(6);
                 courseMap.put("id", course.getId());
+                courseMap.put("courseId", course.getId());
                 courseMap.put("courseName", course.getCourseName());
+                courseMap.put("label", course.getCourseName());
+                courseMap.put("value", course.getId());
                 result.add(courseMap);
             }
         }

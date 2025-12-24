@@ -3,19 +3,24 @@ package org.example.dto;
 import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate; // 推荐使用Java 8+的日期类型
+import java.time.LocalDate;
 
 /**
  * 成绩数据传输对象（DTO）
  * 用于封装前端展示的成绩信息，关联学生、课程等表的关键字段
  */
 @Data
-public class ScoreDTO implements Serializable { // 实现序列化接口，支持网络传输/缓存
+public class ScoreDTO implements Serializable {
 
     /**
      * 成绩记录ID（对应score表的id字段）
      */
     private Integer id;
+
+    /**
+     * 学生ID（对应score表的student_id字段）
+     */
+    private Integer studentId;
 
     /**
      * 学生学号（对应student表的student_no字段）
@@ -31,6 +36,11 @@ public class ScoreDTO implements Serializable { // 实现序列化接口，支�
      * 课程名称（对应course表的course_name字段）
      */
     private String courseName;
+
+    /**
+     * 课程ID（对应score表的course_id字段）
+     */
+    private Integer courseId;
 
     /**
      * 分数（对应score表的score字段，保留小数位数由业务决定）
