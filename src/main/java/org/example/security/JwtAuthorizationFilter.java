@@ -43,9 +43,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         logger.info("处理请求：URI={}, Method={}", requestURI, request.getMethod());
 
-        // 放行登录接口（匹配带/api前缀的路径，或直接匹配/auth/login）
-        if (requestURI.endsWith("/auth/login")) {
-            logger.debug("放行登录接口");
+        // 放行登录接口和OPTIONS预检请求
+        if (requestURI.endsWith("/api/auth/login") || "OPTIONS".equals(request.getMethod())) {
+            logger.debug("放行登录/OPTIONS接口");
             chain.doFilter(request, response);
             return;
         }
@@ -59,6 +59,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
+            // 替换1：Result.fail → Result.unauth()（更贴合401未授权场景）
             out.write(JSON.toJSONString(Result.unauth()));
             out.flush();
             out.close();
@@ -76,6 +77,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 logger.debug("开始验证用户: {}", username);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+                // 核心：使用JwtUtil的validateToken方法验证
                 if (jwtUtil.validateToken(token, username)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
@@ -88,7 +90,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.setContentType("application/json;charset=utf-8");
                     PrintWriter out = response.getWriter();
-                    out.write(JSON.toJSONString(Result.unauth()));
+                    // 替换2：Result.fail → Result.error（自定义错误消息）
+                    out.write(JSON.toJSONString(Result.error("Token已过期或无效")));
                     out.flush();
                     out.close();
                     return;
@@ -99,7 +102,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
-            out.write(JSON.toJSONString(Result.unauth()));
+            // 替换3：Result.fail → Result.error
+            out.write(JSON.toJSONString(Result.error("登录凭证解析失败，请重新登录")));
             out.flush();
             out.close();
             return;

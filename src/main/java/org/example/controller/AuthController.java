@@ -5,7 +5,7 @@ import org.example.dto.LoginDTO;
 import org.example.entity.SysUser;
 import org.example.mapper.SysUserMapper;
 import org.example.utils.JwtUtil;
-import org.example.vo.Result; // 只保留这一个导入，删除其他路径的Result导入
+import org.example.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth") // 核心修正：添加/api前缀，匹配前端请求路径
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -44,13 +44,14 @@ public class AuthController {
         SysUser user = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getUsername, loginDTO.getUsername()));
 
+        // 核心修正：生成Token时直接传原始角色（如STUDENT/TEACHER），避免重复拼接ROLE_
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
 
         // 4. 返回结果（含角色：STUDENT/TEACHER，前端根据role跳转对应页面）
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
         result.put("accessToken", token);
-        result.put("role", user.getRole());
+        result.put("role", user.getRole()); // 后端存储的原始角色（如STUDENT/TEACHER）
         result.put("username", user.getUsername());
 
         return Result.success(result);

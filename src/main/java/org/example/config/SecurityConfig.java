@@ -48,32 +48,34 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new org.springframework.web.cors.CorsConfiguration();
-                    config.addAllowedOrigin("http://localhost:8082");
+                    config.addAllowedOrigin("http://localhost:8082"); // 前端端口
                     config.addAllowedMethod("*");
                     config.addAllowedHeader("*");
                     config.addExposedHeader("Authorization");
                     config.setAllowCredentials(true);
+                    config.setMaxAge(3600L); // 预检请求缓存1小时
                     return config;
                 }))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // 放行登录接口（匹配context-path+路径）
+                        // 放行登录接口（已修正/api前缀）
                         .requestMatchers("/api/auth/login").permitAll()
-                        // 学生接口：匹配/api/score/student/**，要求STUDENT角色
+                        // 放行预检请求（核心：解决OPTIONS请求401）
+                        .requestMatchers(request -> "OPTIONS".equals(request.getMethod())).permitAll()
+                        // 学生接口权限
                         .requestMatchers("/api/score/student/**").hasRole("STUDENT")
-                        // 教师接口：匹配/api/score/teacher/**，要求TEACHER角色
+                        // 教师接口权限
                         .requestMatchers("/api/score/teacher/**").hasRole("TEACHER")
                         .requestMatchers("/api/teacher/**").hasRole("TEACHER")
                         .requestMatchers("/api/student/**").hasRole("STUDENT")
                         .requestMatchers("/api/students/**").hasRole("TEACHER")
-                        .requestMatchers(request -> "OPTIONS".equals(request.getMethod())).permitAll()
+                        // 其他请求需认证
                         .anyRequest().authenticated()
                 );
 
-        // 过滤器顺序：先执行登录认证过滤器，再执行权限解析过滤器
-        // 注意：JwtAuthenticationFilter负责登录生成Token，JwtAuthorizationFilter负责请求解析Token
-        http.addFilter(jwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
+        // 核心修正：移除JwtAuthenticationFilter（登录逻辑已在AuthController实现，无需重复过滤器）
+        // 仅保留JwtAuthorizationFilter解析Token
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
