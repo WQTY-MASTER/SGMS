@@ -14,8 +14,8 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         // 1. 配置跨域核心参数
         CorsConfiguration config = new CorsConfiguration();
-        // 允许前端域名（你的前端运行地址是http://localhost:8081，必须精确匹配）
-        config.addAllowedOrigin("http://localhost:8081");
+        // 允许前端域名（你的前端运行地址是http://localhost:8082，必须精确匹配）
+        config.addAllowedOrigin("http://localhost:8082");
         // 允许携带Cookie（登录后Token通常存在Cookie或请求头中，必须开启）
         config.setAllowCredentials(true);
         // 允许所有HTTP方法（GET/POST/PUT/DELETE等）

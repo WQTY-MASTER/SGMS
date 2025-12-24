@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 成绩服务实现类（适配PostgreSQL integer类型）
+ * 成绩服务实现类（适配PostgreSQL integer类型 + 前端下拉组件数据格式）
  */
 @Service
 public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements ScoreService {
@@ -62,7 +62,7 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     }
 
     /**
-     * 获取教师负责的课程列表（新增多字段返回，适配前端下拉选择）
+     * 获取教师负责的课程列表（扩展字段，适配前端下拉选择器）
      */
     @Override
     public List<Map<String, Object>> getTeacherCourses(Long teacherId) {
@@ -70,11 +70,13 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
         List<Map<String, Object>> result = new ArrayList<>();
         if (!CollectionUtils.isEmpty(courseList)) {
             for (Course course : courseList) {
-                // 扩展Map容量，新增courseId/label/value字段，适配前端下拉组件
-                Map<String, Object> courseMap = new HashMap<>(6);
+                // 扩展Map容量，新增多字段适配前端下拉组件（label/value/name/text等）
+                Map<String, Object> courseMap = new HashMap<>(8);
                 courseMap.put("id", course.getId());
                 courseMap.put("courseId", course.getId());
                 courseMap.put("courseName", course.getCourseName());
+                courseMap.put("name", course.getCourseName());
+                courseMap.put("text", course.getCourseName());
                 courseMap.put("label", course.getCourseName());
                 courseMap.put("value", course.getId());
                 result.add(courseMap);
