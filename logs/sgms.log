@@ -1265,3 +1265,21 @@ Caused by: org.apache.ibatis.reflection.ReflectionException: There is no setter 
 2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
 2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzU0MDgsImV4cCI6MTc2NjY2MTgwOH0.YHB6oNJouCIEOBSHLME6dAPU1oJAeUxzhJIbpTPsDwg
 2025-12-24 19:23:28 [http-nio-8080-exec-4] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:25:06 [http-nio-8080-exec-5] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 19:25:06 [http-nio-8080-exec-5] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 19:25:06 [http-nio-8080-exec-5] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 19:25:06 [http-nio-8080-exec-5] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 19:25:06 [http-nio-8080-exec-5] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 19:25:06 [http-nio-8080-exec-5] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 19:25:06 [http-nio-8080-exec-5] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 19:25:06 [http-nio-8080-exec-5] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzU1MDYsImV4cCI6MTc2NjY2MTkwNn0.Gi_xEQnKR4AasI0RtlZ-pzKK7HbcAm-MX_2mK_hlg4k
+2025-12-24 19:25:06 [http-nio-8080-exec-5] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:25:47 [http-nio-8080-exec-2] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 19:25:47 [http-nio-8080-exec-2] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 19:25:47 [http-nio-8080-exec-2] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 19:25:47 [http-nio-8080-exec-2] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzU1NDcsImV4cCI6MTc2NjY2MTk0N30.CelqcW0c-8R2qbBFvf1R8VpqyGlrdmc-cdY19HyzX0s
+2025-12-24 19:25:47 [http-nio-8080-exec-2] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
