@@ -1241,3 +1241,27 @@ Caused by: org.apache.ibatis.reflection.ReflectionException: There is no setter 
 2025-12-24 19:22:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6ef4cbe1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@207dd1b7, org.springframework.security.web.context.SecurityContextHolderFilter@79ab97fd, org.springframework.security.web.header.HeaderWriterFilter@2d70f312, org.springframework.web.filter.CorsFilter@2baac4a7, org.springframework.security.web.authentication.logout.LogoutFilter@230232b0, org.example.security.JwtAuthorizationFilter@3b481bf5, org.example.security.JwtAuthenticationFilter@521441d5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5fe46d52, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3dfd7eaa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@23ad2d17, org.springframework.security.web.session.SessionManagementFilter@4ea1aa52, org.springframework.security.web.access.ExceptionTranslationFilter@2f15a964, org.springframework.security.web.access.intercept.AuthorizationFilter@66451058]
 2025-12-24 19:22:53 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path '/api'
 2025-12-24 19:22:53 [main] INFO  org.example.SGMSApplication - Started SGMSApplication in 1.822 seconds (process running for 2.324)
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 19:23:26 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 19:23:26 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7cf03364
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 19:23:26 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 19:23:26 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 19:23:26 [http-nio-8080-exec-1] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzU0MDYsImV4cCI6MTc2NjY2MTgwNn0.qWnuT479g0JeuxNN8IZ9M_EDHrlcCxQSKw0C_GRRHi4
+2025-12-24 19:23:26 [http-nio-8080-exec-1] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
+2025-12-24 19:23:28 [http-nio-8080-exec-4] INFO  o.e.security.JwtAuthorizationFilter - 处理请求：URI=/api/auth/login, Method=POST
+2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthorizationFilter - 放行登录接口
+2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthenticationFilter - 登录请求解析成功: 用户名=teacher1
+2025-12-24 19:23:28 [http-nio-8080-exec-4] INFO  o.e.s.impl.UserDetailsServiceImpl - 开始查询用户：teacher1
+2025-12-24 19:23:28 [http-nio-8080-exec-4] INFO  o.e.s.impl.UserDetailsServiceImpl - 用户teacher1查询成功，角色：TEACHER
+2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthenticationFilter - 认证成功，用户名=teacher1
+2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthenticationFilter - 用户角色: TEACHER
+2025-12-24 19:23:28 [http-nio-8080-exec-4] DEBUG o.e.security.JwtAuthenticationFilter - 生成Token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9URUFDSEVSIiwic3ViIjoidGVhY2hlcjEiLCJpYXQiOjE3NjY1NzU0MDgsImV4cCI6MTc2NjY2MTgwOH0.YHB6oNJouCIEOBSHLME6dAPU1oJAeUxzhJIbpTPsDwg
+2025-12-24 19:23:28 [http-nio-8080-exec-4] INFO  o.e.security.JwtAuthenticationFilter - 登录成功，用户名=teacher1, 角色=TEACHER
