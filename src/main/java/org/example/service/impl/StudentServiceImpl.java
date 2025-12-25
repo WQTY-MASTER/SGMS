@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 学生服务实现类（统一为Integer类型）
+ * 学生服务实现类（统一为Integer类型，适配PostgreSQL integer字段，新增全量学生选项查询）
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
@@ -34,9 +34,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return studentMapper.selectByCourseId(courseId);
     }
 
-    // 新增：根据课程ID查询学生下拉选项列表（实现接口中的新增方法）
+    // 新增：根据课程ID查询学生下拉选项列表
     @Override
     public List<StudentOptionDTO> getStudentOptionsByCourseId(Integer courseId) {
         return studentMapper.selectOptionsByCourseId(courseId);
+    }
+
+    // 新增：查询全部学生下拉选项列表（无课程筛选）
+    @Override
+    public List<StudentOptionDTO> getAllStudentOptions() {
+        return studentMapper.selectAllOptions();
     }
 }

@@ -24,7 +24,7 @@ import java.util.HashMap;
 @RequestMapping("/teacher")
 public class TeacherController {
 
-    // 构造器注入（消除字段注入警告，符合Spring规范）
+    // ========== 构造器注入（符合Spring规范，消除字段注入警告） ==========
     private final TeacherService teacherService;
     private final ScoreService scoreService;
     private final StudentService studentService;
@@ -67,18 +67,22 @@ public class TeacherController {
     }
 
     /**
-     * 根据课程ID查询学生列表
+     * 根据课程ID查询学生列表（优化：兼容courseId为空，返回全部学生选项）
      * 适配：courseId为Integer（匹配StudentService + 数据库integer类型）
      */
     @GetMapping("/students-by-course")
-    public Result<List<Map<String, Object>>> getStudentsByCourse(@RequestParam Integer courseId) {
+    public Result<List<Map<String, Object>>> getStudentsByCourse(@RequestParam(required = false) Integer courseId) {
         try {
+            List<StudentOptionDTO> students;
+            // courseId为空/无效时返回全部学生，非空时返回对应课程的学生
             if (courseId == null || courseId <= 0) {
-                return Result.error("课程ID无效");
+                students = studentService.getAllStudentOptions();
+            } else {
+                students = studentService.getStudentOptionsByCourseId(courseId);
             }
-            List<StudentOptionDTO> students = studentService.getStudentOptionsByCourseId(courseId);
+
             List<Map<String, Object>> result = new java.util.ArrayList<>();
-            if (students != null) {
+            if (students != null && !students.isEmpty()) {
                 for (StudentOptionDTO student : students) {
                     Map<String, Object> item = new HashMap<>(5);
                     item.put("id", student.getId());
@@ -93,6 +97,32 @@ public class TeacherController {
             return Result.success(result);
         } catch (Exception e) {
             return Result.error("查询课程对应学生失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 查询全部学生下拉选项（独立接口，复用性更高）
+     */
+    @GetMapping("/students/options")
+    public Result<List<Map<String, Object>>> getAllStudentOptions() {
+        try {
+            List<StudentOptionDTO> students = studentService.getAllStudentOptions();
+            List<Map<String, Object>> result = new java.util.ArrayList<>();
+            if (students != null && !students.isEmpty()) {
+                for (StudentOptionDTO student : students) {
+                    Map<String, Object> item = new HashMap<>(5);
+                    item.put("id", student.getId());
+                    item.put("studentId", student.getId());
+                    item.put("studentNo", student.getStudentNo());
+                    item.put("studentName", student.getStudentName());
+                    item.put("label", student.getStudentName());
+                    item.put("value", student.getId());
+                    result.add(item);
+                }
+            }
+            return Result.success(result);
+        } catch (Exception e) {
+            return Result.error("查询学生列表失败：" + e.getMessage());
         }
     }
 

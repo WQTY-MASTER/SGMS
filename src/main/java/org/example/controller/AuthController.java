@@ -28,8 +28,9 @@ import java.util.Map;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/auth") // 核心修正：添加/api前缀，匹配前端请求路径
+@RequestMapping("/auth")
 public class AuthController {
+    // ========== 统一依赖注入（整合两段代码的注入逻辑，无冗余） ==========
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -39,7 +40,6 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // 新增注入：学生/教师Mapper + 密码加密器（注册接口需要）
     @Autowired
     private StudentMapper studentMapper;
 
@@ -49,7 +49,7 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // 登录接口（保留原有逻辑，无修改）
+    // ========== 登录接口（保留完整逻辑，无修改） ==========
     @PostMapping("/login")
     public Result<?> login(@RequestBody LoginDTO loginDTO) {
         // 1. 用户名密码认证
@@ -82,7 +82,7 @@ public class AuthController {
         return Result.success(result);
     }
 
-    // 新增：学生注册接口（带事务+参数校验）
+    // ========== 学生注册接口（整合校验逻辑+修复语法问题） ==========
     @PostMapping("/register/student")
     @Transactional // 事务注解：确保用户和学生表要么都插入成功，要么都回滚
     public Result<?> registerStudent(@RequestBody RegisterDTO registerDTO) {
@@ -91,14 +91,15 @@ public class AuthController {
         String confirmPassword = registerDTO.getConfirmPassword();
         String studentNo = registerDTO.getStudentNo();
 
-        // 参数非空+一致性校验
+        // 参数非空+一致性校验（补充：confirmPassword为null时也提示不一致）
         if (username == null || username.trim().isEmpty()) {
             return Result.error("用户名不能为空");
         }
         if (password == null || password.trim().isEmpty()) {
             return Result.error("密码不能为空");
         }
-        if (confirmPassword != null && !confirmPassword.equals(password)) {
+        // 优化：confirmPassword为null时直接提示不一致（前端未传该字段的场景）
+        if (!password.equals(confirmPassword)) {
             return Result.error("两次输入的密码不一致");
         }
         if (studentNo == null || studentNo.trim().isEmpty()) {
@@ -129,22 +130,22 @@ public class AuthController {
         sysUser.setUpdateTime(LocalDateTime.now());
         sysUserMapper.insert(sysUser);
 
-        // 校验用户ID是否生成成功
-        Integer userId = sysUser.getId() != null ? sysUser.getId().intValue() : null;
+        // 校验用户ID是否生成成功（统一为Long类型，避免类型转换问题）
+        Long userId = sysUser.getId();
         if (userId == null) {
             return Result.error("注册失败，请稍后重试");
         }
 
         // 2. 插入学生表（关联用户ID）
         Student student = new Student();
-        student.setUserId(userId);
+        student.setUserId(userId.intValue()); // 若Student的userId是Integer，转int；否则直接用userId
         student.setStudentNo(studentNo);
         studentMapper.insert(student);
 
         return Result.success("注册成功");
     }
 
-    // 新增：教师注册接口（带事务+参数校验）
+    // ========== 教师注册接口（整合逻辑+统一字段处理） ==========
     @PostMapping("/register/teacher")
     @Transactional // 事务注解：确保用户和教师表要么都插入成功，要么都回滚
     public Result<?> registerTeacher(@RequestBody RegisterDTO registerDTO) {
@@ -160,7 +161,7 @@ public class AuthController {
         if (password == null || password.trim().isEmpty()) {
             return Result.error("密码不能为空");
         }
-        if (confirmPassword != null && !confirmPassword.equals(password)) {
+        if (!password.equals(confirmPassword)) {
             return Result.error("两次输入的密码不一致");
         }
         if (teacherNo == null || teacherNo.trim().isEmpty()) {
