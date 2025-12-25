@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.dto.ScoreDTO;
+import org.example.dto.ScoreSegmentCountDTO; // 新增：成绩分段计数DTO
 import org.example.entity.Score;
+import org.example.vo.ScoreSegmentStats; // 新增：成绩分段统计VO
 
 import java.util.List;
 import java.util.Map;
@@ -125,4 +127,19 @@ public interface ScoreService extends IService<Score> {
      * @return 是否有权限
      */
     boolean checkBatchScorePermission(Long teacherId, List<Integer> scoreIds);
+
+    // ========== 新增成绩分段统计方法 ==========
+    /**
+     * 查询课程成绩各分数段人数计数
+     * @param courseId 课程ID（Integer类型）
+     * @return 各分数段计数DTO
+     */
+    ScoreSegmentCountDTO getScoreSegmentCounts(Integer courseId);
+
+    /**
+     * 查询课程成绩分段统计完整信息（含平均分、最高分、最低分、分数段等）
+     * @param courseId 课程ID（Integer类型）
+     * @return 成绩分段统计VO
+     */
+    ScoreSegmentStats getScoreSegmentStats(Integer courseId);
 }

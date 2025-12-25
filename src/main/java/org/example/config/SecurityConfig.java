@@ -69,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/score/student/**").hasRole("STUDENT")
                         // 教师接口权限
                         .requestMatchers("/score/teacher/**").hasRole("TEACHER")
+                        .requestMatchers("/stat/**").hasRole("TEACHER")
                         .requestMatchers("/teacher/**").hasRole("TEACHER")
                         .requestMatchers("/student/**").hasRole("STUDENT")
                         .requestMatchers("/students/**").hasRole("TEACHER")

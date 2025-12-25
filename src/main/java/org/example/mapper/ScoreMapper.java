@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.example.dto.ScoreDTO;
+import org.example.dto.ScoreSegmentCountDTO; // 新增：导入成绩分段统计DTO
 import org.example.entity.Score;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -48,4 +49,12 @@ public interface ScoreMapper extends BaseMapper<Score> {
             @Param("studentName") String studentName,
             @Param("courseId") Integer courseId
     );
+
+    // ========== 新增成绩分段统计方法 ==========
+    /**
+     * 查询课程成绩各分数段人数
+     * @param courseId 课程ID
+     * @return 各分数段计数DTO
+     */
+    ScoreSegmentCountDTO selectScoreSegmentCounts(@Param("courseId") Integer courseId);
 }

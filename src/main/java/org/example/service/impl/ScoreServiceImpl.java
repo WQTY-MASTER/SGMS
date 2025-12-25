@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.dto.ScoreDTO;
+import org.example.dto.ScoreSegmentCountDTO; // 新增：成绩分段计数DTO
 import org.example.entity.Course;
 import org.example.entity.Score;
 import org.example.entity.Teacher;
@@ -12,10 +13,14 @@ import org.example.mapper.CourseMapper;
 import org.example.mapper.ScoreMapper;
 import org.example.mapper.TeacherMapper;
 import org.example.service.ScoreService;
+import org.example.vo.ScoreSegmentDistribution; // 新增：分数段分布VO
+import org.example.vo.ScoreSegmentStats; // 新增：成绩分段统计VO
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal; // 新增：高精度计算
+import java.math.RoundingMode; // 新增：四舍五入模式
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -192,5 +197,91 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
             }
         }
         return true;
+    }
+
+    // ========== 新增成绩分段统计方法 ==========
+    /**
+     * 查询课程成绩各分数段人数计数
+     */
+    @Override
+    public ScoreSegmentCountDTO getScoreSegmentCounts(Integer courseId) {
+        return scoreMapper.selectScoreSegmentCounts(courseId);
+    }
+
+    /**
+     * 查询课程成绩分段统计完整信息（含平均分、最高分、最低分、分数段分布等）
+     */
+    @Override
+    public ScoreSegmentStats getScoreSegmentStats(Integer courseId) {
+        // 1. 获取课程下所有成绩数据
+        List<ScoreDTO> scores = getScoreListByCourseId(courseId);
+        // 2. 获取各分数段人数计数
+        ScoreSegmentCountDTO segmentCounts = getScoreSegmentCounts(courseId);
+
+        // 3. 处理各分数段人数（空值兜底）
+        long count0To60 = segmentCounts != null && segmentCounts.getCount0To60() != null ? segmentCounts.getCount0To60() : 0L;
+        long count60To80 = segmentCounts != null && segmentCounts.getCount60To80() != null ? segmentCounts.getCount60To80() : 0L;
+        long count80To100 = segmentCounts != null && segmentCounts.getCount80To100() != null ? segmentCounts.getCount80To100() : 0L;
+
+        // 4. 计算总人数（优先用成绩列表总数，兜底用分数段求和）
+        long totalFromScores = scores == null ? 0L : scores.size();
+        long total = totalFromScores > 0 ? totalFromScores : count0To60 + count60To80 + count80To100;
+
+        // 5. 计算平均分、最高分、最低分（高精度计算避免浮点误差）
+        BigDecimal avgScore = BigDecimal.ZERO;
+        BigDecimal maxScore = BigDecimal.ZERO;
+        BigDecimal minScore = null;
+        long validCount = 0;
+
+        if (scores != null) {
+            BigDecimal sum = BigDecimal.ZERO;
+            for (ScoreDTO scoreDTO : scores) {
+                if (scoreDTO.getScore() == null) {
+                    continue;
+                }
+                BigDecimal score = scoreDTO.getScore();
+                sum = sum.add(score);
+                validCount++;
+                // 更新最高分
+                if (maxScore.compareTo(score) < 0) {
+                    maxScore = score;
+                }
+                // 更新最低分
+                if (minScore == null || minScore.compareTo(score) > 0) {
+                    minScore = score;
+                }
+            }
+            // 计算平均分（保留1位小数，四舍五入）
+            if (validCount > 0) {
+                avgScore = sum.divide(BigDecimal.valueOf(validCount), 1, RoundingMode.HALF_UP);
+            }
+        }
+
+        // 最低分空值兜底
+        if (minScore == null) {
+            minScore = BigDecimal.ZERO;
+        }
+
+        // 6. 构建分数段分布列表
+        List<ScoreSegmentDistribution> distribution = new ArrayList<>();
+        distribution.add(new ScoreSegmentDistribution("0-60", count0To60, formatRate(count0To60, total)));
+        distribution.add(new ScoreSegmentDistribution("60-80", count60To80, formatRate(count60To80, total)));
+        distribution.add(new ScoreSegmentDistribution("80-100", count80To100, formatRate(count80To100, total)));
+
+        // 7. 封装并返回完整统计结果
+        return new ScoreSegmentStats(avgScore, maxScore, minScore, total, distribution);
+    }
+
+    /**
+     * 私有工具方法：格式化占比（保留1位小数，百分比形式）
+     */
+    private String formatRate(long count, long total) {
+        if (total <= 0) {
+            return "0.0%";
+        }
+        BigDecimal rate = BigDecimal.valueOf(count)
+                .multiply(BigDecimal.valueOf(100))
+                .divide(BigDecimal.valueOf(total), 1, RoundingMode.HALF_UP);
+        return rate + "%";
     }
 }

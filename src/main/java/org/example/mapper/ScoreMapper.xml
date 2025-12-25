@@ -165,4 +165,13 @@
         </if>
     </select>
 
+    <select id="selectScoreSegmentCounts" resultType="org.example.dto.ScoreSegmentCountDTO">
+        SELECT
+            SUM(CASE WHEN s.score &lt; 60 THEN 1 ELSE 0 END) AS count0To60,
+            SUM(CASE WHEN s.score &gt;= 60 AND s.score &lt; 80 THEN 1 ELSE 0 END) AS count60To80,
+            SUM(CASE WHEN s.score &gt;= 80 AND s.score &lt;= 100 THEN 1 ELSE 0 END) AS count80To100
+        FROM score s
+        WHERE s.course_id = #{courseId, jdbcType=INTEGER}
+    </select>
+
 </mapper>
