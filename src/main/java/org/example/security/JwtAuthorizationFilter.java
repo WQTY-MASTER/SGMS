@@ -43,7 +43,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         logger.info("处理请求：URI={}, Method={}", requestURI, request.getMethod());
 
-        // 放行登录、注册接口和OPTIONS预检请求
+        // 🌟 核心优化：放行登录、注册接口和OPTIONS预检请求（兼容注册功能）
         if (requestURI.endsWith("/auth/login")
                 || requestURI.contains("/auth/register")
                 || "OPTIONS".equals(request.getMethod())) {
@@ -55,7 +55,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(tokenHeader);
         logger.debug("请求头{}: {}", tokenHeader, authHeader);
 
-        // 非登录接口，校验Token
+        // 非登录/注册接口，强制校验Token
         if (authHeader == null || !authHeader.startsWith(tokenPrefix)) {
             logger.warn("请求头中无有效Token，URI={}", requestURI);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -79,7 +79,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 logger.debug("开始验证用户: {}", username);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                // 核心：使用JwtUtil的validateToken方法验证
+                // 核心：使用JwtUtil的validateToken方法验证Token有效性
                 if (jwtUtil.validateToken(token, username)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
@@ -104,13 +104,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
-            // 替换3：Result.fail → Result.error
+            // 替换3：Result.fail → Result.error（统一错误提示风格）
             out.write(JSON.toJSONString(Result.error("登录凭证解析失败，请重新登录")));
             out.flush();
             out.close();
             return;
         }
 
+        // 所有校验通过，放行请求
         chain.doFilter(request, response);
     }
 }
