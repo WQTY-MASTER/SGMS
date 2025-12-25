@@ -43,9 +43,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         logger.info("处理请求：URI={}, Method={}", requestURI, request.getMethod());
 
-        // 放行登录接口和OPTIONS预检请求
-        if (requestURI.endsWith("/auth/login") || "OPTIONS".equals(request.getMethod())) {
-            logger.debug("放行登录/OPTIONS接口");
+        // 放行登录、注册接口和OPTIONS预检请求
+        if (requestURI.endsWith("/auth/login")
+                || requestURI.contains("/auth/register")
+                || "OPTIONS".equals(request.getMethod())) {
+            logger.debug("放行登录/注册/OPTIONS接口");
             chain.doFilter(request, response);
             return;
         }
