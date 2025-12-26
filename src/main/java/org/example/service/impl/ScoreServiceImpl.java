@@ -223,6 +223,22 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
         long count60To80 = segmentCounts != null && segmentCounts.getCount60To80() != null ? segmentCounts.getCount60To80() : 0L;
         long count80To100 = segmentCounts != null && segmentCounts.getCount80To100() != null ? segmentCounts.getCount80To100() : 0L;
 
+        if (segmentCounts == null && scores != null) {
+            for (ScoreDTO scoreDTO : scores) {
+                if (scoreDTO.getScore() == null) {
+                    continue;
+                }
+                BigDecimal score = scoreDTO.getScore();
+                if (score.compareTo(BigDecimal.valueOf(60)) < 0) {
+                    count0To60++;
+                } else if (score.compareTo(BigDecimal.valueOf(80)) < 0) {
+                    count60To80++;
+                } else {
+                    count80To100++;
+                }
+            }
+        }
+
         // 4. 计算总人数（优先用成绩列表总数，兜底用分数段求和）
         long totalFromScores = scores == null ? 0L : scores.size();
         long total = totalFromScores > 0 ? totalFromScores : count0To60 + count60To80 + count80To100;
