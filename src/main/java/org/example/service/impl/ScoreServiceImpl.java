@@ -223,24 +223,34 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
         long count60To80 = segmentCounts != null && segmentCounts.getCount60To80() != null ? segmentCounts.getCount60To80() : 0L;
         long count80To100 = segmentCounts != null && segmentCounts.getCount80To100() != null ? segmentCounts.getCount80To100() : 0L;
 
-        if (segmentCounts == null && scores != null) {
-            for (ScoreDTO scoreDTO : scores) {
-                if (scoreDTO.getScore() == null) {
-                    continue;
-                }
-                BigDecimal score = scoreDTO.getScore();
-                if (score.compareTo(BigDecimal.valueOf(60)) < 0) {
-                    count0To60++;
-                } else if (score.compareTo(BigDecimal.valueOf(80)) < 0) {
-                    count60To80++;
-                } else {
-                    count80To100++;
+        boolean hasSegmentCounts = segmentCounts != null
+                && (segmentCounts.getCount0To60() != null
+                || segmentCounts.getCount60To80() != null
+                || segmentCounts.getCount80To100() != null);
+
+        long totalFromScores = scores == null ? 0L : scores.size();
+        if (!hasSegmentCounts || (totalFromScores > 0 && count0To60 + count60To80 + count80To100 == 0)) {
+            count0To60 = 0L;
+            count60To80 = 0L;
+            count80To100 = 0L;
+            if (scores != null) {
+                for (ScoreDTO scoreDTO : scores) {
+                    if (scoreDTO.getScore() == null) {
+                        continue;
+                    }
+                    BigDecimal score = scoreDTO.getScore();
+                    if (score.compareTo(BigDecimal.valueOf(60)) < 0) {
+                        count0To60++;
+                    } else if (score.compareTo(BigDecimal.valueOf(80)) < 0) {
+                        count60To80++;
+                    } else {
+                        count80To100++;
+                    }
                 }
             }
         }
 
         // 4. 计算总人数（优先用成绩列表总数，兜底用分数段求和）
-        long totalFromScores = scores == null ? 0L : scores.size();
         long total = totalFromScores > 0 ? totalFromScores : count0To60 + count60To80 + count80To100;
 
         // 5. 计算平均分、最高分、最低分（高精度计算避免浮点误差）
